@@ -25,7 +25,7 @@ export default class DepartmentsController {
         if (Department[0] == null)
         {
             return "No department to show"
-        }
+        } 
         return Department
     }
     public async show({request, response} : HttpContextContract) 
@@ -57,7 +57,7 @@ export default class DepartmentsController {
     }
     public async delete({request} : HttpContextContract)
     {
-        console.log("dept deletey works");
+        console.log("dept delete works");
         // console.log(request.body());  
         // console.log(request.input('id'));
         try{

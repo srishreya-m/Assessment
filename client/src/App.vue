@@ -12,7 +12,7 @@ import axios from "axios";
 
     <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
+      <!-- <router-link to="/">Home</router-link> | -->
       <router-link to="/emp">Employee Management</router-link> |
       <!-- added a new route to our app.vue file// name: "trial",-->
       <router-link to="/dept">Department Management</router-link> |

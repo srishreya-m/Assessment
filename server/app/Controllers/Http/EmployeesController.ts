@@ -2,23 +2,11 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import employeeTables from 'App/Models/employeeTables'
 import EmpValidator from 'App/Validators/EmpValidator';
 export default class EmployeesController {
-    /*
-id: number
-name : string
-dob : Date
-doj : Date
-email : string
-phone : number
-departmentID: number
-createdAt: DateTime
-updatedAt: DateTime
-    */
 public async create({request,response} : HttpContextContract)
   { 
     console.log("emp create works");
      try{ await request.validate(EmpValidator).catch(err  => {response.badRequest(err.messages) })
         const user = new employeeTables ()
-        //user.id = request.input('id')
         user.name = request.input('data.name')
         user.dob = request.input('data.dob')
         user.doj = request.input('data.doj')
@@ -79,13 +67,10 @@ public async create({request,response} : HttpContextContract)
   {
     console.log("emp delete works");
     try{
-        //const emp1 = await request.input('id');
-        //console.log(emp1);
-          //console.log(request.input('id'))
           await request.validate(EmpValidator).catch(err  => {response.badRequest(err.messages) })
           const emp = await employeeTables.findOrFail(Number(request.input('data.id'))); 
           await emp.delete();
-          //return "Employee successfully deleted"
+          return "Employee successfully deleted"
       }catch{
           return "Employee ID doesnot exists"
       }

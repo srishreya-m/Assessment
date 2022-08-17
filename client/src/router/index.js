@@ -5,11 +5,11 @@ import DepartmentMaintenance from '../views/DepartmentMaintenance.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: HomeView
-    },
+    // {
+    //   path: '/',
+    //   name: 'home',
+    //   component: HomeView
+    // },
     {
       path: '/emp',
       name: 'emp',
