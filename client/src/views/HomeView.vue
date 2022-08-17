@@ -4,6 +4,6 @@ import TheWelcome from '@/components/TheWelcome.vue'
 
 <template>
   <main>
-    <TheWelcome />
+   <h1> Select between Employee Maintenance and Department Maintenance</h1>
   </main>
 </template>

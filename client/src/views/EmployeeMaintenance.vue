@@ -1,3 +1,6 @@
+ <script setup>
+import dateformat from "dateformat";
+</script>
  <template>
   <div>
     <div>
@@ -47,7 +50,7 @@
         <div>
         <div>
           <label>Filter by :</label
-          ><select v-model="column">
+    ><select v-model="column">
             <option :value="null">No Column Filter</option>
             <option v-for="col in cols" :key="col">{{ col }}</option>
           </select>
@@ -65,15 +68,18 @@
               <td>Date Created At</td>
               <td>Date Updated At</td> 
               <td>Delete</td>
-              <td>Department ID</td>
+              <td>Update</td>
             </tr>
           </thead>
           <tbody>
             <tr v-for="row in rows" :key="row.id">
               <td v-for="col in cols" :key="col">{{ row[col] }}</td>
-                <td>
-                <button v-on:click="deleteform(col.id)">Delete</button></td>
-            </tr>
+              <td><button v-on:click="deleteform(col.id)">Delete</button></td>
+                <td><button v-on:click="revertForm(row.id)">Update</button>
+                <button v-on:click="updateRow(id,name , dob, doj, email, phone, departmentID)">Save</button></td>
+           
+                </tr>
+               
           </tbody>
         </table>
         <h2>Department Details</h2>
@@ -126,21 +132,10 @@ export default {
         header: { App_KEY: "YHT4NXeirHDUsIGcBkqEv0MOVO7bZvMU" },
       })
       .then((result) => {
-        this.items = result.data;
         this.todos = result.data;
+        this.items = result.data;
       });
-    this.items = Array.from(Array(11), (x, i) => {
-      return {    
-        id: this.id,
-        name: this.name,
-        dob: this.dob,
-        doj: this.doj,
-        email: this.email,
-        phone: this.phone,
-        departmentID: this.departmentID,
-      };
-    });
-    this.forms = {
+       this.forms = {
       id: this.forms.id,
       name: this.forms.name,
        dob: this.forms.dob,
@@ -149,6 +144,23 @@ export default {
         phone: this.forms.phone,
         departmentID: this.forms.departmentID,
     };
+    this.items = Array.from(Array(11), (x, i) => {
+       const dob1 = this.dob;
+        const doj1 = this.doj;
+        const finaldob = dateformat(dob1, "dS mmmm, yyyy");
+        const finaldoj = dateformat(doj1, "dS mmmm, yyyy");
+      return {    
+        id: this.id,
+        name: this.name,
+         dob: finaldob,
+        doj: finaldoj,
+        // dob: this.dob,
+        // doj: this.doj,
+        email: this.email,
+        phone: this.phone,
+        departmentID: this.departmentID,
+      };
+    });
     axios
       .get("http://127.0.0.1:3333/Dept/display", {
         header: { App_KEY: "YHT4NXeirHDUsIGcBkqEv0MOVO7bZvMU" },
@@ -182,6 +194,10 @@ export default {
   },
   methods: {
     submitForm(name, dob, doj, email, phone, departmentID) {
+        // const dob1 = this.dob;
+        // const doj1 = this.doj;
+        // const finaldob = dateformat(dob1, "dS mmmm, yyyy");
+        // const finaldoj = dateformat(doj1, "dS mmmm, yyyy");
       const data = {
         name: this.name,
         dob: this.dob,
@@ -235,8 +251,11 @@ export default {
       //alert("Deleted Successfuly");
     },
     update(id,name , dob, doj, email, phone, departmentID) {
+    //    const dob1 = this.dob;
+    //     const doj1 = this.doj;
+    //     const finaldob = dateformat(dob1, "dS mmmm, yyyy");
+    //     const finaldoj = dateformat(doj1, "dS mmmm, yyyy");
       const data = {
-         id: this.id,
         name: this.name,
         dob: this.dob,
         doj: this.doj,
@@ -258,6 +277,43 @@ export default {
         .finally(() => {
           //Perform action in always
         });
+    },
+     revertForm(i) {
+      {
+         console.log(i);
+        this.name = this.forms[i].name;
+        this.dob = this.forms[i].dob;
+        this.doj = this.forms[i].doj;
+        this.email = this.forms[i].email;
+        this.phone = this.forms[i].phone;
+        this.departmentID = this.forms[i].departmentID;
+      }
+    },
+    updateRow(id,name , dob, doj, email, phone, departmentID) {
+      //alert("Are you sure you want to update?");
+     const date = {
+         name: this.name,
+        dob: this.dob,
+        doj: this.doj,
+        email: this.email,
+        phone: this.phone,
+        departmentID: this.departmentID,
+      };
+      axios
+        .put("http://127.0.0.1:3333/Emp/update", {
+          header: { App_KEY: "YHT4NXeirHDUsIGcBkqEv0MOVO7bZvMU" },
+          data,
+        })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((error) => {
+          // error.response.status Check status code
+        })
+        .finally(() => {
+          //Perform action in always
+        });
+      this.clearForm();
     },
     config: {
       Headers: { App_KEY: "YHT4NXeirHDUsIGcBkqEv0MOVO7bZvMU" },

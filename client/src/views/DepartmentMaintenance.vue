@@ -63,15 +63,13 @@
               <td>Email</td>
               <td>Phone Number</td>
               <td>Date Created At</td>
-              <td>Date Updated At</td>
-             <td>Department ID</td>
-              <td>Department Name</td>
+              <td>Date Updated At</td> 
             </tr>
           </thead>
           <tbody>
             <tr v-for="row in rows" :key="row.id">
               <td v-for="col in cols" :key="col">{{ row[col] }}</td>
-             </tr>
+                </tr>
           </tbody>
         </table>
       </div>

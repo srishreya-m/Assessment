@@ -12,18 +12,16 @@ import axios from "axios";
 
     <div id="app">
     <div id="nav">
-      <!-- <router-link to="/">Home</router-link> | -->
+      <router-link to="/">Home</router-link> |
       <router-link to="/emp">Employee Management</router-link> |
       <!-- added a new route to our app.vue file// name: "trial",-->
       <router-link to="/dept">Department Management</router-link> |
       <!-- <router-link to="/trial">emp</router-link> -->
     </div>
-    <router-view />
+    <router-view /><h1> Select between Employee Maintenance and Department Maintenance</h1>
   </div>
   <!-- <div class="content">{{ todos }}</div> -->
  
-
-   
 </template>
 <script>
 export default {

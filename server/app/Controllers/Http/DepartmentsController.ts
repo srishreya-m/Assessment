@@ -76,7 +76,7 @@ export default class DepartmentsController {
         console.log(request.input('data.id'));
         try{
             const logs = new Log()
-    logs.action = ("department delete was performed")
+       logs.action = ("department delete was performed")
     logs.save()
            // await request.validate(DeptValidator).catch(err  => response.badRequest(err.messages))
             const dpmt = await departmentTables.findOrFail(Number(request.input('data.id')));
