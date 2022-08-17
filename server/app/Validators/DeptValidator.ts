@@ -6,7 +6,7 @@ export default class DeptValidator {
 
  
   public schema = schema.create({
-     // id : schema.number([rules.required()]),
+     id : schema.number([rules.required()]),
       name : schema.string([rules.maxLength(20) , rules.required(),rules.unique({table : 'departmentTables', column : 'name'}) ]),
   })
 

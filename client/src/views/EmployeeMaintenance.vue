@@ -64,12 +64,15 @@
               <td>Phone Number</td>
               <td>Date Created At</td>
               <td>Date Updated At</td> 
+              <td>Delete</td>
               <td>Department ID</td>
             </tr>
           </thead>
           <tbody>
             <tr v-for="row in rows" :key="row.id">
               <td v-for="col in cols" :key="col">{{ row[col] }}</td>
+                <td>
+                <button v-on:click="deleteform(col.id)">Delete</button></td>
             </tr>
           </tbody>
         </table>
@@ -178,7 +181,6 @@ export default {
     },
   },
   methods: {
-   
     submitForm(name, dob, doj, email, phone, departmentID) {
       const data = {
         name: this.name,
@@ -206,7 +208,7 @@ export default {
     },
     deleteform(id, name) {
     //   console.log("In");
-    //   console.log(id);
+      console.log(id);
       //const idm = id;
       //console.log(id);
       const data = {

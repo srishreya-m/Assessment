@@ -5,10 +5,12 @@
       <tr>
         <td>Department ID</td>
         <td>Department Name</td>
+        <td>Delete</td>
       </tr>
       <tr v-for="item in todos1" v-bind:key="item.id">
         <td>{{ item.id }}</td>
         <td>{{ item.name }}</td>
+         <td><button v-on:click="deleteform(items.id)">Delete</button></td>
       </tr>
     </table>
     <h2>Create New Department</h2>
@@ -37,7 +39,7 @@
         <button
           v-on:click="submitForm(id, name)" class="btn btn-primary" > Submit </button>
         <button v-on:click="update(id, name)">Update</button>
-        <button v-on:click="deleteform(id, name)">Delete</button>
+        <button v-on:click="deleteform(id)">Delete</button>
       </div>
     </form>
     <div>
@@ -62,7 +64,7 @@
               <td>Phone Number</td>
               <td>Date Created At</td>
               <td>Date Updated At</td>
-              <td>Department ID</td>
+             <td>Department ID</td>
               <td>Department Name</td>
             </tr>
           </thead>
@@ -70,7 +72,6 @@
             <tr v-for="row in rows" :key="row.id">
               <td v-for="col in cols" :key="col">{{ row[col] }}</td>
              </tr>
-          
           </tbody>
         </table>
       </div>
@@ -181,11 +182,13 @@ export default {
           //Perform action in always
         });
     },
-    deleteform(id, name) {
+    deleteform(id) {
       console.log("here");
+      console.log(id);
+      const idm = id;
+      console.log(idm);
       const data = {
-        id: this.id,
-        name: this.name,
+        id: idm,
       };
       axios
         .delete("http://127.0.0.1:3333/Dept/delete", {
@@ -224,26 +227,7 @@ export default {
         });
     },
   },
-  created() {
-    axios
-      .get("http://127.0.0.1:3333/Dept/display", {
-        header: { App_KEY: "YHT4NXeirHDUsIGcBkqEv0MOVO7bZvMU" },
-      })
-      .then((result) => {
-        this.todos1 = result.data;
-      });
-    this.form = {
-        id: this.id,
-        name: this.name,
-    };
-    axios
-      .get("http://127.0.0.1:3333/Emp/display", {
-        header: { App_KEY: "YHT4NXeirHDUsIGcBkqEv0MOVO7bZvMU" },
-      })
-      .then((result) => {
-        this.todos = result.data;
-      });
-  },
+ 
   config: {
     Headers: { App_KEY: "YHT4NXeirHDUsIGcBkqEv0MOVO7bZvMU" },
   },

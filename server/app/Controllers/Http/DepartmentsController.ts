@@ -71,9 +71,9 @@ export default class DepartmentsController {
     }
     public async delete({request} : HttpContextContract)
     {
-        console.log("dept delete works");
-        // console.log(request.body());  
-        // console.log(request.input('id'));
+        console.log("dept delete was performed");
+        console.log(request.body());  
+        console.log(request.input('data.id'));
         try{
             const logs = new Log()
     logs.action = ("department delete was performed")
