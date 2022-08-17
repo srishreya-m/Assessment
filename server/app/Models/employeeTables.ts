@@ -17,10 +17,10 @@ export default class employeeTables extends BaseModel {
  @column()
  public phone : number
  @column()
-//  public departmentID : number
-  @OneToOne(() => departmentTables)
-  @JoinColumn()
-  public departmentID: departmentTables;
+ public departmentID : number
+  // @OneToOne(() => departmentTables)
+  // @JoinColumn()
+  // public departmentID: departmentTables;
 //table.integer('department_id'); 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
