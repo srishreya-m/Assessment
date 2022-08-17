@@ -1,12 +1,17 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import employeeTables from 'App/Models/employeeTables'
+import Log from 'App/Models/Log';
 import EmpValidator from 'App/Validators/EmpValidator';
 export default class EmployeesController {
 public async create({request,response} : HttpContextContract)
   { 
     console.log("emp create works");
+    
      try{ await request.validate(EmpValidator).catch(err  => {response.badRequest(err.messages) })
-        const user = new employeeTables ()
+        const logs = new Log()
+    logs.action = ("employee create was performed")
+    logs.save()
+    const user = new employeeTables ()
         user.name = request.input('data.name')
         user.dob = request.input('data.dob')
         user.doj = request.input('data.doj')
@@ -20,10 +25,14 @@ public async create({request,response} : HttpContextContract)
         return 'Cannot display data'
       } 
   }
-  public async display ()
+  public async display () 
   {
-    console.log("emp display works");
-    try{const Emp = await employeeTables.all();
+    console.log("emp display was performed");
+    try{
+    //     const logs = new Log()
+    // logs.action = ("employee display works")
+    // logs.save()
+        const Emp = await employeeTables.all();
       if (Emp[0] == null)
       {
           return "No employee to show"
@@ -36,6 +45,9 @@ public async create({request,response} : HttpContextContract)
   public async show({request,response} : HttpContextContract)
   {
       try{
+        const logs = new Log()
+    logs.action = ("employee display by id was performed")
+    logs.save()
         await request.validate(EmpValidator).catch(err  => {response.badRequest(err.messages) })
           const emp = await employeeTables.findOrFail(Number(request.input('data.id')));
           return emp;
@@ -48,7 +60,11 @@ public async create({request,response} : HttpContextContract)
   public async update({request,response} : HttpContextContract)
   {
     console.log("emp update works");
-      try{await request.validate(EmpValidator).catch(err  => {response.badRequest(err.messages) })
+      try{
+        const logs = new Log()
+    logs.action = ("employee update was performed")
+    logs.save()
+    await request.validate(EmpValidator).catch(err  => {response.badRequest(err.messages) })
           const emp = await employeeTables.findOrFail(Number(request.input('data.id')));
           emp.name = request.input('data.name')
           emp.dob = request.input('data.dob')
@@ -65,7 +81,7 @@ public async create({request,response} : HttpContextContract)
   }
   public async delete({request,response} : HttpContextContract)
   {
-    console.log("emp delete works");
+    console.log("employee delete was performed");
     try{
           await request.validate(EmpValidator).catch(err  => {response.badRequest(err.messages) })
           const emp = await employeeTables.findOrFail(Number(request.input('data.id'))); 

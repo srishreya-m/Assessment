@@ -1,12 +1,16 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import DeptValidator from 'App/Validators/DeptValidator';
 import departmentTables from 'App/Models/departmentTables';
+import Log from 'App/Models/Log';
 export default class DepartmentsController {
 
     public async create({request,response} : HttpContextContract)
         //public async store({request : HttpContextContract)
-    {  console.log("dept create works");
+    {  console.log("dept create was performed");
         try{ 
+        const logs = new Log()
+    logs.action = ("department create was performed")
+    logs.save()
             await request.validate(DeptValidator).catch(err  => response.badRequest(err.messages))
           const dept = new departmentTables()
          // dept.id = request.input('dept_id')
@@ -20,8 +24,11 @@ export default class DepartmentsController {
     }
     public async display ()
     {
+    //     const logs = new Log()
+    // logs.action = ("department display works")
+    // logs.save()
         const Department = await departmentTables.all();
-        console.log("dept display works");
+        console.log("dept display was performed");
         if (Department[0] == null)
         {
             return "No department to show"
@@ -30,7 +37,11 @@ export default class DepartmentsController {
     }
     public async show({request, response} : HttpContextContract) 
     {
+        console.log("dept display works");
         try{
+            const logs = new Log()
+    logs.action = ("department display by id works")
+    logs.save()
             await request.validate(DeptValidator).catch(err  => response.badRequest(err.messages))
             const dpmt = await departmentTables.findOrFail(Number(request.input('data.id')));
             return dpmt;
@@ -46,6 +57,9 @@ export default class DepartmentsController {
         // console.log(request.input('data.dept_id'));
         console.log("dept update works");
         try{
+            const logs = new Log()
+    logs.action = ("department update was performed")
+    logs.save()
            await request.validate(DeptValidator).catch(err  => response.badRequest(err.messages))
             const dpmt = await departmentTables.findOrFail(Number(request.input('data.id')));
             dpmt.name = request.input('data.name');
@@ -61,6 +75,9 @@ export default class DepartmentsController {
         // console.log(request.body());  
         // console.log(request.input('id'));
         try{
+            const logs = new Log()
+    logs.action = ("department delete was performed")
+    logs.save()
            // await request.validate(DeptValidator).catch(err  => response.badRequest(err.messages))
             const dpmt = await departmentTables.findOrFail(Number(request.input('data.id')));
             await dpmt.delete();

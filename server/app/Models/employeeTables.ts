@@ -16,11 +16,11 @@ export default class employeeTables extends BaseModel {
  public email : string
  @column()
  public phone : number
- @column()
- public departmentID : number
-  // @OneToOne(() => departmentTables)
-  // @JoinColumn()
-  // public departmentID: departmentTables;
+//  @column()
+//  public departmentID : number
+  @OneToOne(() => departmentTables)
+  @JoinColumn()
+  public departmentID: departmentTables;
 //table.integer('department_id'); 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

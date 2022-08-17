@@ -86,11 +86,6 @@
       </table>
       </div>
     </div>
-    <!-- id: number  name : string
-dob : Date  doj : Date
-email : string  phone : number
-departmentID: number createdAt: DateTime 
-updatedAt: DateTime  -->
   </div>
 </template>
 <script>
@@ -183,22 +178,7 @@ export default {
     },
   },
   methods: {
-    created() {
-      axios
-        .get("http://127.0.0.1:3333/Emp/display", {
-          header: { App_KEY: "YHT4NXeirHDUsIGcBkqEv0MOVO7bZvMU" },
-        })
-        .then((result) => {
-          this.todos = result.data;
-        });
-      axios
-        .get("http://127.0.0.1:3333/Dept/display", {
-          header: { App_KEY: "YHT4NXeirHDUsIGcBkqEv0MOVO7bZvMU" },
-        })
-        .then((result) => {
-          this.todos1 = result.data;
-        });
-    },
+   
     submitForm(name, dob, doj, email, phone, departmentID) {
       const data = {
         name: this.name,
