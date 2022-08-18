@@ -1,83 +1,62 @@
- <template>
-  <div>
+<template>
+<html lang="en">
+  <div class="container-xl" v-if="ishidden==true" v-on:click="ishidden==false" >
+<div class="table-responsive">
+<div class="table-wrapper">
+<div class="table-title">
+<div class="row"> <div>
+   
     <h2>Department Details</h2>
-    <table border="1px">
-      <tr>
-        <td>Department ID</td>
-        <td>Department Name</td>
-        <td>Delete</td>
-      </tr>
-      <tr v-for="item in todos1" v-bind:key="item.id">
-        <td>{{ item.id }}</td>
-        <td>{{ item.name }}</td>
-         <td><button v-on:click="deleteform(items.id)">Delete</button></td>
-      </tr>
-    </table>
-    <h2>Create New Department</h2>
-    <form>
-      <div class="form-group">
-        <label for="id">Dept Id: </label>
-        <input
-          type="number"
-          class="form-control"
-          id="id"
-          placeholder="Enter the Dept Id "
-          v-model="id"
-        />
-      </div>
-      <div class="form-group">
-        <label for="name">Dept Name: </label>
-        <input
-          type="text"
-          class="form-control"
-          id="name"
-          placeholder="Dept Name"
-          v-model="name"
-        />
-      </div>
-      <div class="form-group">
-        <button
-          v-on:click="submitForm(id, name)" class="btn btn-primary" > Submit </button>
-        <button v-on:click="update(id, name)">Update</button>
-        <button v-on:click="deleteform(id)">Delete</button>
-      </div>
-    </form>
-    <div>
-      <h2>Department Employee Details</h2>
-      <div >
-        <div>
-          <label>Filter by :</label
-          ><select v-model="column">
-            <option :value="null">No Column Filter</option>
-            <option v-for="col in cols" :key="col">{{ col }}</option>
-          </select>
-          <input type="text1" v-model="search" placeholder="Search" />
-        </div>
-        <table border="1px">
-          <thead>
-            <tr>
-              <td>ID</td>
-              <td>Name</td>
-              <td>DOB</td>
-              <td>DOJ</td>
-              <td>Email</td>
-              <td>Phone Number</td>
-              <td>Date Created At</td>
-              <td>Date Updated At</td> 
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="row in rows" :key="row.id">
-              <td v-for="col in cols" :key="col">{{ row[col] }}</td>
-                </tr>
-          </tbody>
-        </table>
-      </div>
+    <div class="col-sm-4">
+    <div class="search-box">
+    <i class="material-icons">&#xE8B6;</i>
+    <input type="text" id="search-item" class="form-control" placeholder="Search" v-on:keyup="searchResults()" v-model="searchText">
     </div>
-  </div>
+    <br>
+    <button class="btn btn-info add-new"><i class="fa fa-plus"></i> <router-link to="/addDept">  Add New Department </router-link></button>
+    </div>
+    <table border="1px" >
+ <thead>
+  <tr>
+    <th>Department ID</th>
+     <th>Department Name</th>
+     <td>Options</td>
+    </tr>
+</thead>
+    <tbody>
+      <tr v-for="(user,i) in deptDetails" :key = "i">
+     <td>{{user.id}}</td>
+   <td>{{user.name}}</td>
+    <td>
+<button class="edit" title="Edit" data-toggle="tooltip" @click ="editButton(user)"> Edit </button>
+<button class="delete" title="Delete" data-toggle="tooltip" @click ="deleteData(user.id)">Delete</button>
+    </td>
+    </tr>        
+    </tbody>
+    </table>
+</div>
+    </div>  
+</div> </div></div></div>
+  <!--  -->
+  <div v-else v-on:click="ishidden == !ishidden">
+<ul class="form-style-1">
+    <h1> DEPARTMENT UPDATE </h1>
+    <li>
+        <label>DEPARTMENT NAME<span class="required">*</span></label>
+        <input type="text" name="field3" class="field-long" v-model="name"/>
+    </li>
+    <li>
+        <input type=button class="btn2" value="Update" @click="updateData()">
+    </li>
+</ul>
+<br>
+<br>
+</div> 
+</html>
 </template>
 <script>
 import { createApp } from "vue";
+import moment from 'moment';
 const app = createApp({});
 import axios from "axios";
 import VueAxios from "vue-axios";
@@ -88,141 +67,93 @@ export default {
   name: "table1",
   data() {
     return {
-      forms: {
-        id: "",
-        name: "",
-      },
       forms: [],
+       deptDetails: [],
       id: "",
       name: "",
-      todos: null,
-      todos1: null,
       list: undefined,
       ID: "",
       search: null,
       column: null,
       items: [],
+      instance :null,
+  ishidden:true,
     };
   },
   beforeMount() {
     axios
-      .get("http://127.0.0.1:3333/Emp/display", {
+    .get('http://127.0.0.1:3333/Dept/selectallDept', {
         header: { App_KEY: "YHT4NXeirHDUsIGcBkqEv0MOVO7bZvMU" },
       })
       .then((result) => {
-        this.items = result.data;
+        this.deptDetails = result.data;
       });
-    this.items = Array.from(Array(11), (x, i) => {
-      return {
-       id: this.id,
-        name: this.name,
-        dob: this.dob,
-        doj: this.doj,
-        email: this.email,
-        phone: this.phone,
-        departmentID: this.departmentID,
-      };
-    });
-    axios
-      .get("http://127.0.0.1:3333/Dept/display", {
-        header: { App_KEY: "YHT4NXeirHDUsIGcBkqEv0MOVO7bZvMU" },
-      })
-      .then((result) => {
-        this.todos1 = result.data;
-      });
-    this.forms = {
-      id: this.forms.id,
-      name: this.forms.name,
-    };
+    
   },
   computed: {
-    cols() {
-      return this.items.length >= 1 ? Object.keys(this.items[0]) : [];
-    },
-    rows() {
-      if (!this.items.length) {
-        return [];
-      }
-      return this.items.filter((item) => {
-        let props =
-          this.search && this.column
-            ? [item[this.column]]
-            : Object.values(item);
-        return props.some(
-          (prop) =>
-            !this.search ||
-            (typeof prop === "string"
-              ? prop.includes(this.search)
-              : prop.toString(10).includes(this.search))
-        );
-      });
-    },
+    
   },
   methods: {
-    submitForm(id, name) {
-      console.log("here");
-      const data = {
+    searchResults() 
+    {
+         console.log(this.searchText)
+         if (this.searchText.length == 0 || this.searchText == '') 
+         {
+            this.quotes = this.data;
+         }
+        this.quotes = this.data.filter(quote => quote.quote.includes(this.searchText));
+    },
+    
+    async select()
+    {
+      const all = await axios.get('http://127.0.0.1:3333/Dept/selectallDept', {
+        header: { App_KEY: "YHT4NXeirHDUsIGcBkqEv0MOVO7bZvMU" },
+      })
+      .then((result) => {
+        this.deptDetails = result.data;
+      });
+    },
+
+    async deleteData(deptid)
+    {
+      alert("Are you sure on Deletion")
+      await axios.delete("http://127.0.0.1:3333/Dept/deleteRowDept", {
+          header: { App_KEY: "YHT4NXeirHDUsIGcBkqEv0MOVO7bZvMU" },
+          data: { id: deptid },
+        })
+      alert("Successfully Deleted")
+      this.select()
+      //window.location.reload()
+    },
+
+    editButton(user)
+    {
+        this.id = user.id
+        this.name = user.name
+        this.ishidden = false
+    },  
+
+    async updateData()
+  {
+        const data = {
         id: this.id,
-        name: this.name,
-      };
-      axios
-        .post("http://127.0.0.1:3333/Dept/create", {
+        name: this.name
+       }
+      await axios.put("http://127.0.0.1:3333/Dept/updateRowDept", {
           header: { App_KEY: "YHT4NXeirHDUsIGcBkqEv0MOVO7bZvMU" },
           data,
-        })
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((error) => {
-          // error.response.status Check status code
-        })
-        .finally(() => {
-          //Perform action in always
-        });
-    },
-    deleteform(id) {
-      console.log("here");
-      console.log(id);
-      const idm = id;
-      console.log(idm);
-      const data = {
-        id: idm,
-      };
-      axios
-        .delete("http://127.0.0.1:3333/Dept/delete", {
-          header: { App_KEY: "YHT4NXeirHDUsIGcBkqEv0MOVO7bZvMU" },
-          data,
-        })
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((error) => {
-          // error.response.status Check status code
-        })
-        .finally(() => {
-          //Perform action in always
-        });
-    },
-    update(id, name) {
-      console.log("here");
-      const data = {
-       id: this.id,
-        name: this.name,
-      };
-      axios
-        .put("http://127.0.0.1:3333/Dept/update", {
-          header: { App_KEY: "YHT4NXeirHDUsIGcBkqEv0MOVO7bZvMU" },
-          data,
-        })
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((error) => {
-          // error.response.status Check status code
-        })
-        .finally(() => {
-          //Perform action in always
-        });
+        }) 
+      //this.instance.patch('/updateRowDept', data, this.config)
+      alert("Updated Successfully")
+      this.clearform()
+      this.select()
+      this.ishidden = true
+      
+  },
+  
+  clearform() {
+      this.id= "";
+      this.name="";
     },
   },
  
@@ -253,7 +184,6 @@ input[type="text"] {
   background-repeat: no-repeat;
   padding: 12px 20px 12px 40px;
 }
-
 input[type="text"]:focus {
   width: 100%;
 }
@@ -268,7 +198,6 @@ input[type="email"] {
   background-repeat: no-repeat;
   padding: 12px 20px 12px 40px;
 }
-
 input[type="email"]:focus {
   width: 100%;
 }
@@ -283,7 +212,6 @@ input[type="number"] {
   background-repeat: no-repeat;
   padding: 12px 20px 12px 40px;
 }
-
 input[type="number"]:focus {
   width: 100%;
 }
@@ -336,7 +264,6 @@ v-table {
     text-align: left;
     margin-left: -1rem;
     font-size: 1rem;
-
     padding: 1rem 0;
     margin-top: 1rem;
   }

@@ -14,11 +14,10 @@ import axios from "axios";
     <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/emp">Employee Management</router-link> |
-      <!-- added a new route to our app.vue file// name: "trial",-->
-      <router-link to="/dept">Department Management</router-link> |
-      <!-- <router-link to="/trial">emp</router-link> -->
-    </div>
-    <router-view /><h1> Select between Employee Maintenance and Department Maintenance</h1>
+      <router-link to="/dept">Department Management</router-link>
+</div>
+    <router-view />
+    <!-- <h1> Select between Employee Maintenance and Department Maintenance</h1> -->
   </div>
   <!-- <div class="content">{{ todos }}</div> -->
  
@@ -112,6 +111,3 @@ nav a:first-of-type {
   }
 }
 </style>
-<!-- 
-import EmployeeMaintenance from '../views/EmployeeMaintenance.vue'
-import DepartmentMaintenance from '../views/DepartmentMaintenance.vue' -->

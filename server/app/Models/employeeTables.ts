@@ -1,8 +1,6 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, column, hasOne, HasOne } from '@ioc:Adonis/Lucid/Orm'
 import departmentTables from './departmentTables';
-import {JoinColumn, OneToOne} from 'typeorm';
-
 export default class employeeTables extends BaseModel {
   @column({ isPrimary: true })
   public id: number
@@ -16,12 +14,9 @@ export default class employeeTables extends BaseModel {
  public email : string
  @column()
  public phone : number
-//  @column()
-//  public departmentID : number
-  @OneToOne(() => departmentTables)
-  @JoinColumn()
-  public departmentID: departmentTables;
-//table.integer('department_id'); 
+@column()
+  @hasOne(() => departmentTables)
+  public departmentID : HasOne <typeof  departmentTables> 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 

@@ -5,19 +5,17 @@ Route.get('/', async () => {
 
 Route.group(() => {
   Route.group(() => {
-    Route.get('/display', 'EmployeesController.display');
-    Route.post('/create', 'EmployeesController.create');
-    Route.post('/show', 'EmployeesController.show');
-    Route.put('/update', 'EmployeesController.update');
-    Route.delete('/delete','EmployeesController.delete');
+    Route.post('/insertEmp','EmployeesController.insertEmp')
+  Route.get('/selectallEmp','EmployeesController.selectallEmp')
+  Route.put('/updateRowEmp','EmployeesController.updateRowEmp')
+  Route.delete('/deleteRowEmp','EmployeesController.deleteRowEmp')
   }).prefix('Emp')
   
   Route.group(() => {
-    Route.get('/display', 'DepartmentsController.display');
-    Route.post('/create', 'DepartmentsController.create');
-    Route.get('/show', 'DepartmentsController.show');
-    Route.put('/update', 'DepartmentsController.update');
-    Route.delete('/delete','DepartmentsController.delete');
+    Route.post('/insertDept','DepartmentsController.insertDept')
+    Route.get('/selectallDept','DepartmentsController.selectallDept')
+    Route.put('/updateRowDept','DepartmentsController.updateRowDept')
+    Route.delete('/deleteRowDept','DepartmentsController.deleteRowDept')
   }).prefix('Dept')
 }).middleware('Auth')
 //

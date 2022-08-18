@@ -1,89 +1,55 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import DeptValidator from 'App/Validators/DeptValidator';
 import departmentTables from 'App/Models/departmentTables';
-import Log from 'App/Models/Log';
-export default class DepartmentsController {
-
-    public async create({request,response} : HttpContextContract)
-        //public async store({request : HttpContextContract)
-    {  console.log("dept create was performed");
+// import Log from 'App/Models/Log';
+// import Logger from '@ioc:Adonis/Core/Logger'
+export default class DepartmentsController
+ {
+    public async insertDept ({request,response} : HttpContextContract)
+    {  
+        console.log("dept create was performed");
         try{ 
-        const logs = new Log()
-    logs.action = ("department create was performed")
-    logs.save()
             await request.validate(DeptValidator).catch(err  => response.badRequest(err.messages))
           const dept = new departmentTables()
          // dept.id = request.input('dept_id')
-          dept.name = request.input('data.name')
-          dept.save()
+          dept.name = request.input('name')
+           await dept.save()
            return 'Inserted into database'
           }
         catch(err){
-          return 'Cannot display data'
+          return("Incorrect Values. Department Id exists already")
         }
     }
-    public async display ()
-    {
-    //     const logs = new Log()
-    // logs.action = ("department display works")
-    // logs.save()
-        const Department = await departmentTables.all();
-        console.log("dept display was performed");
-        if (Department[0] == null)
+    public async selectallDept (){
+        try { return await (await departmentTables.all()).reverse() }
+        catch { return ("No data to View")}
+    } 
+    public async updateRowDept ({request}) 
+    { 
+        try
         {
-            return "No department to show"
-        } 
-        return Department
-    }
-    public async show({request, response} : HttpContextContract) 
-    {
-        console.log("dept display works");
-        try{
-            const logs = new Log()
-    logs.action = ("department display by id works")
-    logs.save()
-            await request.validate(DeptValidator).catch(err  => response.badRequest(err.messages))
-            const dpmt = await departmentTables.findOrFail(Number(request.input('data.id')));
-            return dpmt;
+            const update = await departmentTables.findOrFail(request.input('id'))
+            //update.id = request.input('id')
+            update.name =  request.input('name')
+            await update.save()
+            return update
         }
         catch
         {
-            return 'Department doesnot exists'
-        }  
-     }
-    public async update({request, response} : HttpContextContract)
-    {
-        // console.log(request.body());  
-        // console.log(request.input('data.dept_id'));
-        console.log("dept update works");
-        try{
-            const logs = new Log()
-    logs.action = ("department update was performed")
-    logs.save()
-           await request.validate(DeptValidator).catch(err  => response.badRequest(err.messages))
-            const dpmt = await departmentTables.findOrFail(Number(request.input('data.id')));
-            dpmt.name = request.input('data.name');
-            await dpmt.save();
-            return "Department name successfully updated"
-        }catch{
-            return "Department ID  does not exists"
+            return("Error during Update")
         }
     }
-    public async delete({request} : HttpContextContract)
+    public async deleteRowDept ({request}) 
     {
-        console.log("dept delete was performed");
-        console.log(request.body());  
-        console.log(request.input('data.id'));
-        try{
-            const logs = new Log()
-       logs.action = ("department delete was performed")
-    logs.save()
-           // await request.validate(DeptValidator).catch(err  => response.badRequest(err.messages))
-            const dpmt = await departmentTables.findOrFail(Number(request.input('data.id')));
-            await dpmt.delete();
-            return "Department successfully deleted"
-        }catch{
-            return "Department ID doesnot exists"
+        try
+        {
+            const deletedRow = await departmentTables.findOrFail(request.input('id'))
+            await deletedRow.delete()
+            return deletedRow
+        }
+        catch
+        {
+            return("Data not avaliable")
         }
     }
 }

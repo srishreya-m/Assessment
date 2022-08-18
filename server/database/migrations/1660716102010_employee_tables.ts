@@ -11,7 +11,7 @@ export default class extends BaseSchema {
       table.string('email',255).unique;
       table.integer('phone');
       
-      table.integer('departmentId');  
+      table.integer('departmentId').references('departmentTables.id');  
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
       /**
