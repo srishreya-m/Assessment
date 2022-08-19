@@ -3,6 +3,8 @@ import EmployeeMaintenance from '../views/EmployeeMaintenance.vue'
 import DepartmentMaintenance from '../views/DepartmentMaintenance.vue'
 import addEmp from '../views/addEmp.vue'
 import addDept from '../views/addDept.vue'
+import EmpData from '../views/EmpData.vue'
+import Emp from '../views/Emp.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
 routes : [
@@ -31,6 +33,16 @@ routes : [
     path: '/addEmp',
     name: 'addEmp',
     component: () => import('../views/addEmp.vue')
+  },
+  {
+    path: '/EmpData',
+    name: 'EmpData',
+    component: () => import('../views/Empdata.vue')
+  },
+  {
+    path: '/Emp',
+    name: 'Emp',
+    component: () => import('../views/Emp.vue')
   },
 ]
 })

@@ -1,0 +1,83 @@
+CREATE OR REPLACE FUNCTION employee_insert_trigger_fnc()
+  RETURNS trigger AS
+$$
+BEGIN
+    INSERT INTO "logs" ("action", "performed_at")
+         VALUES('Employee Inserted',current_date);
+RETURN NEW;
+END;
+$$
+LANGUAGE 'plpgsql';
+CREATE or replace TRIGGER employee_insert_trigger
+  AFTER INSERT
+  ON "employee_tables"
+  FOR EACH ROW
+  EXECUTE PROCEDURE employee_insert_trigger_fnc();
+
+
+CREATE OR REPLACE FUNCTION employee_verify_user_priv()
+  RETURNS trigger AS
+$$
+BEGIN
+    INSERT INTO "logs" ("action", "performed_at")
+         VALUES('Employee Updated',current_date);
+RETURN NEW;
+END;
+$$
+LANGUAGE 'plpgsql';
+CREATE TRIGGER verify_user_for_update
+ BEFORE UPDATE
+ ON "employee_tables"
+ FOR EACH ROW
+EXECUTE PROCEDURE employee_verify_user_priv();
+
+
+CREATE OR REPLACE FUNCTION aft_delete()
+  RETURNS trigger AS
+$$
+BEGIN
+    INSERT INTO "logs" ("action", "performed_at")
+         VALUES('Employee Deleted',current_date);
+RETURN NEW;
+END;
+$$
+LANGUAGE 'plpgsql';
+CREATE TRIGGER employee_delete_trigger
+  AFTER DELETE
+  ON "employee_tables"
+  FOR EACH ROW
+ EXECUTE PROCEDURE aft_delete();
+
+
+CREATE OR REPLACE FUNCTION department_insert_trigger_fnc()
+  RETURNS trigger AS
+$$
+BEGIN
+    INSERT INTO "logs" ("action", "performed_at")
+         VALUES('Department Inserted',current_date);
+RETURN NEW;
+END;
+$$
+LANGUAGE 'plpgsql';
+CREATE or replace TRIGGER department_insert_trigger
+  AFTER INSERT
+  ON "department_tables"
+  FOR EACH ROW
+  EXECUTE PROCEDURE department_insert_trigger_fnc();
+
+
+CREATE OR REPLACE FUNCTION department_verify_user_priv()
+  RETURNS trigger AS
+$$
+BEGIN
+    INSERT INTO "logs" ("action", "performed_at")
+         VALUES('Department Updated',current_date);
+RETURN NEW;
+END;
+$$
+LANGUAGE 'plpgsql';
+CREATE TRIGGER verify_user_for_update
+ BEFORE UPDATE
+ ON "department_tables"
+ FOR EACH ROW
+EXECUTE PROCEDURE department_verify_user_priv();

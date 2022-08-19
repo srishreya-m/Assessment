@@ -35,6 +35,7 @@
         <button class="btn" @click="insertData()">Submit</button>
     </li>
      <button class="btn btn-info add-new"> <router-link to="/emp">  Go Back </router-link></button>
+      <button v-on:click="submitForm(name, dob, doj, email, phone, departmentID)">submit</button>
 </ul>
 <br>
 <br>
@@ -87,13 +88,39 @@ beforeMount() {
       });
   },
 methods:{
+  submitForm(name, dob, doj, email, phone, departmentID) {
+      //  const dob1 = this.dob;
+      //   const doj1 = this.doj;
+      //   const finaldob = dateformat(dob1, "dS mmmm, yyyy");
+      //   const finaldoj = dateformat(doj1, "dS mmmm, yyyy");
+      const data = { 
+        name: this.name,
+         dob: this.dob,
+        doj: this.doj,
+        email: this.email,
+        phone: this.phone,
+        departmentID: this.departmentID,
+      };
+      console.log(data);
+      axios
+        .post("http://127.0.0.1:3333/Emp/store", {
+          header: { App_KEY: "YHT4NXeirHDUsIGcBkqEv0MOVO7bZvMU" },
+          data,
+        })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((error) => {
+          // error.response.status Check status code
+        })
+        .finally(() => {
+          //Perform action in always
+        });
+         alert("Data Inserted Successfully")
+                this.clearform()
+    },
     async insertData()
     {
-        //const allDetails = await this.instance.get('/selectallEmp', this.config)
-        // const dobdate = this.dob;
-        // const dojdate = this.doj;
-        // const formatdob = dateformat(dobdate)
-        // const formatdoj = dateformat(dojdate )
         const empDetails = { 
             name: this.name, 
             dob: this.dob,

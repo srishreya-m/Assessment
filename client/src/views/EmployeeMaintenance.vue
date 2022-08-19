@@ -12,7 +12,7 @@ import dateformat from "dateformat";
 <div class="col-sm-8"><h2><b>EMPLOYEE DETAILS</b></h2></div>
   <div class="col-sm-4">
   <div class="search-box">
-   <input type="text" id="search-item" class="form-control" placeholder="Search&hellip;" v-on:keyup="searchResults()" v-model="searchText">
+   <input type="text" id="search-item" class="form-control" placeholder="Search" v-on:keyup="searchResults()" v-model="searchText">
    </div>
    <br>
   <button class="btn btn-info add-new"> <router-link to="/addEmp">  Add New Employee!! </router-link></button>
@@ -20,6 +20,22 @@ import dateformat from "dateformat";
  </div>
   </div>
   </div>
+
+      <label>Filter by :</label>
+    <!-- <select v-model="column">
+            <option :value="null">No Column Filter</option>
+            <option v-for="col in cols" :key="col">{{ col }}</option>
+          </select> -->
+           <!-- <label>DEPARTMENT NAME</label> -->
+        <select name="field4" class="field-select" v-model="search">
+        <option value="" disabled hidden>Select Department</option>
+        <option v-for="dept in deptArray" v-bind:key="dept.name" v-bind:value="dept.id"> {{ dept.name }}</option>
+        </select>
+        <!-- <input type="form-control" v-model="search" placeholder="Search" /> -->
+        <button class="search" title="Search" data-toggle="tooltip" @click ="filterval(search)"> Search </button>
+          <!--  -->
+      <!-- <input class="form-control" placeholder="Enter the Dept Id " v-model="filters.id" /> -->
+  
    <table border="1px">
     <thead>
     <tr>
@@ -33,16 +49,14 @@ import dateformat from "dateformat";
         </tr>
  </thead>
  <tbody>
-     <tr v-for="(user,i) in allDetails" :key = "i">
+     <tr v-for="(user,i) in allDetails" :key = "i" >
     <td>{{user.id}}</td>
     <td>{{user.name}}</td>
-    <!-- <td>{{user.dob | formatDate}}</td>
-    <td>{{user.doj | formatDate}}</td> -->
     <td>{{user.dob }}</td>
     <td>{{user.doj }}</td>
     <td>{{user.email}}</td>
      <td>{{user.phone}}</td>
-     <td>{{user.departmentID}}</td>
+     <td>{{user.department_id}}</td>
    <td>
 <button class="edit" title="Edit" data-toggle="tooltip" @click ="editButton(user)"> Edit </button>
 <button class="delete" title="Delete" data-toggle="tooltip" @click ="deleteData(user.id)">Delete</button>
@@ -50,6 +64,7 @@ import dateformat from "dateformat";
      </tr>    
      </tbody>
      </table>
+
     </div>
     </div>  
     </div>
@@ -91,12 +106,10 @@ import dateformat from "dateformat";
     <li>
         <input type=button class="btn2" value="Update" @click="updateData()">
     </li>
-    
 </ul>
 <br>
 <br>
 </div>
-
   </html>
 </template>
 <script>
@@ -104,12 +117,15 @@ import { createApp } from "vue";
 const app = createApp({});
 import axios from "axios";
 import VueAxios from "vue-axios";
+import VueTableDynamic from 'vue-table-dynamic'
 app.use(VueAxios, axios);
 export default {
+   components: { VueTableDynamic },
   name: "PostFormAxios",
   name: "table1",
   data() {
     return {
+      todos: [],
   list: undefined,
     ID: "",
    search: null,
@@ -141,12 +157,14 @@ export default {
       })
       .then((result) => {
         this.allDetails = result.data;
+        this.todos = result.data;
       });
       axios .get('http://127.0.0.1:3333/Dept/selectallDept', {
         header: { App_KEY: "YHT4NXeirHDUsIGcBkqEv0MOVO7bZvMU" },
       })
       .then((result) => {
         this.deptArray= result.data;
+        // this.todos = result.data;
         //console.log(deptArray);
       });
   
@@ -202,7 +220,7 @@ async select()
         this.departmentID = user.departmentID
         this.ishidden = false
     },  
-    async filterval(){
+    async filterval(search){
     const tableDetails = await axios.get('http://127.0.0.1:3333/Emp/selectallEmp', {
         header: { App_KEY: "YHT4NXeirHDUsIGcBkqEv0MOVO7bZvMU" },
       })
@@ -253,6 +271,7 @@ async select()
         this.department_id = ""
     },
   },
+ 
 };
 </script>
 <style>

@@ -6,6 +6,7 @@ Route.get('/', async () => {
 Route.group(() => {
   Route.group(() => {
     Route.post('/insertEmp','EmployeesController.insertEmp')
+    Route.post('/store','EmployeesController.store')
   Route.get('/selectallEmp','EmployeesController.selectallEmp')
   Route.put('/updateRowEmp','EmployeesController.updateRowEmp')
   Route.delete('/deleteRowEmp','EmployeesController.deleteRowEmp')

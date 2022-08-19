@@ -3,6 +3,8 @@ import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
 import EmployeeMaintenanceVue from './views/EmployeeMaintenance.vue'
 import DepartmentMaintenanceVue from './views/DepartmentMaintenance.vue'
+import EmpDataVue from './views/EmpData.vue'
+import EmpVue from './views/Emp.vue'
 import axios from "axios";
 </script>
 
@@ -14,7 +16,9 @@ import axios from "axios";
     <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/emp">Employee Management</router-link> |
-      <router-link to="/dept">Department Management</router-link>
+      <router-link to="/dept">Department Management</router-link> | 
+      <router-link to="/Emp">Emp table1</router-link>
+      <router-link to="/EmpData">Emp table</router-link>
 </div>
     <router-view />
     <!-- <h1> Select between Employee Maintenance and Department Maintenance</h1> -->

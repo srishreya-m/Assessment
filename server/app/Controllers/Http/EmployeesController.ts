@@ -3,6 +3,29 @@ import employeeTables from 'App/Models/employeeTables'
 // import Log from 'App/Models/Log';
 import EmpValidator from 'App/Validators/EmpValidator';
 export default class EmployeesController {
+
+    public async store({request,response} : HttpContextContract)
+    { 
+        // console.log(request.input('name')); 
+        console.log(request.input('data'));
+       try{ 
+        await request.validate(EmpValidator).catch(err  => {response.badRequest(err.messages) })
+          const user = new employeeTables()
+          // const dept = new Department()
+          console.log(request.input('data.name'));
+          user.name = request.input('data.name')
+          user.dob = request.input('data.dob') 
+          user.doj = request.input('data.doj')
+          user.email = request.input('data.email') 
+          user.phone = request.input('data.phone') 
+          user.departmentID= request.input('data.departmentID') 
+          user.save()
+           return 'Inserted into database' 
+          }
+        catch(err){
+          return 'Cannot display data'
+        }}
+
  public async insertEmp({request,response} : HttpContextContract)
  {
      try {
